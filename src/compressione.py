@@ -5,7 +5,7 @@ from dahuffman import HuffmanCodec
 import time
 import pickle
 
-inputFile = open("TestFiles/Input/grammar.lsp", "r")
+inputFile = open("TestFiles/Input/lcet10.txt", "r")
 listInput = inputFile.readlines()
 stringInput = ""
 for val in listInput:
@@ -16,6 +16,18 @@ dictionary = set(stringInput)
 #BWT
 print("Starting BWT...")
 bwtStartTime = time.time()
+
+# Codice per eseguire la BWT a blocchi
+'''
+block_lenght = 1024*300
+outputBWT = ""
+if len(stringInput) > block_lenght:
+    for i in range(0, len(stringInput),block_lenght):
+        input_block = stringInput[i:i+block_lenght]
+        outputBWT += bwt.bwt_from_suffix(input_block)
+
+'''
+
 outputBWT = bwt.bwt_from_suffix(stringInput)
 bwtElapsedTime = time.time() - bwtStartTime
 print(str(bwtElapsedTime) + "  -> elapsed time of BWT")
