@@ -19,13 +19,15 @@ bwtStartTime = time.time()
 
 # Codice per eseguire la BWT a blocchi
 
+"""
 block_lenght = 1024*300
 outputBWT = ""
 if len(stringInput) > block_lenght:
     for i in range(0, len(stringInput),block_lenght):
         input_block = stringInput[i:i+block_lenght]
         outputBWT += bwt.bwt_from_suffix(input_block)
-
+"""
+outputBWT = bwt.bwt_from_suffix(stringInput)
 
 
 # outputBWT = bwt.bwt_from_suffix(stringInput)

@@ -5,6 +5,7 @@ import time
 import pickle
 from dahuffman import HuffmanCodec
 
+start = time.time()
 # leggo il dizionario salvato dalla bwt in fase di compressione
 dictionaryFile = open("TestFiles/Output/outputDictBWT.txt")
 dictionaryLines = dictionaryFile.readlines()
@@ -46,3 +47,4 @@ for i in range(1, len(bwtDecodedString)):
     outputBWTString += bwtDecodedString[i]
 outputBWTFile.write(str(outputBWTString))
 
+print("elapsed time: " + str(time.time() - start))
