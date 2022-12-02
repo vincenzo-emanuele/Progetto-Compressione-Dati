@@ -1,4 +1,10 @@
 src/Bwt/__pycache__/*
 *.DS_Store
 *.pyc
-TestFiles/Output/
+src/TestFiles/Output/decompresso.txt
+src/TestFiles/Output/outputBWT.txt
+src/TestFiles/Output/outputDictBWT.txt
+src/TestFiles/Output/outputMTF.txt
+src/TestFiles/Output/outputPC.txt
+src/TestFiles/Output/outputPCCodec.txt
+src/TestFiles/Output/outputRLE.txt
