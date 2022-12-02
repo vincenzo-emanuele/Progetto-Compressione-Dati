@@ -18,17 +18,16 @@ encodedFile = open("TestFiles/Output/outputPC.txt", "rb")
 codecFile = open("TestFiles/Output/outputPCCodec.txt", "rb")
 encoded = pickle.load(encodedFile)
 codec = pickle.load(codecFile)
-print(codec.decode(encoded))
-
+outputPC = codec.decode(encoded)
 
 # IRLE
-rleFile = open("TestFiles/Output/outputRLE.txt", "r")
+'''rleFile = open("TestFiles/Output/outputRLE.txt", "r")
 rleLines = rleFile.readlines()
 rleString = ""
 for val in rleLines:
-    rleString += val
+    rleString += val'''
 rleModule = rle.Rle()
-rleDecodedString = rle.Rle.rle_decode(rleModule, data=rleString)
+rleDecodedString = rle.Rle.rle_decode(rleModule, data=outputPC)
 #print(rleDecodedString)
 
 # IMTF
@@ -37,7 +36,7 @@ res = []
 for i in mtfList:
     res.append(int(i))
 mtfDecodedString = mtf.decode(res, dictionary=sorted(dictionaryStr))
-print(mtfDecodedString)
+#print("-----MTF: " + mtfDecodedString)
 
 # IBWT
 bwtDecodedString = bwt.ibwt_from_suffix(mtfDecodedString)
