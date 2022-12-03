@@ -1,5 +1,5 @@
 import Bwt.suffix as suffix
-from pydivsufsort import divsufsort
+#from pydivsufsort import divsufsort
 
 # versione non efficiente del calcolo dell'array dei suffissi (non viene più usata)
 def suffix_array(string): 
@@ -8,8 +8,8 @@ def suffix_array(string):
 # versione della BWT che utilizza gli array dei suffissi
 def bwt_from_suffix(string, s_array=None):
     if s_array is None:
-        s_array = divsufsort(string)
-        # s_array = suffix.buildSuffixArray(string, len(string))
+        #s_array = divsufsort(string)
+         s_array = suffix.buildSuffixArray(string, len(string))
     return("".join(string[idx - 1] for idx in s_array)) 
 
 # inversa della BWT che utilizza gli array dei suffissi
@@ -57,7 +57,7 @@ def ibwt_from_suffix(string):
     for j in range(len(string) - 1, -1, -1):
         out[j] = string[i]
         i = P[i] + C[string[i]]
-    return out
+    return out[1:] # The first char is always an EOF
 
 # inversa della BWT che non usa i vettori dei suffissi (non viene più usata)
 def ibwt(r: str) -> str:
