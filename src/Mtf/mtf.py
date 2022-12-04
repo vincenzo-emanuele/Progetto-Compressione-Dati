@@ -1,11 +1,14 @@
 from typing import List, Tuple, Union
 
-def encode(plain_text: str, dictionary: str) -> List[int]:
-    
-    # Trasformo il dizionario da stringa a lista di caratteri
+def encode(plain_text: str, dictionary) -> List[int]:
     dict_list = []
-    for i in dictionary:
-        dict_list.append(i)
+    # Trasformo il dizionario da stringa a lista di caratteri
+    if type(dictionary) is str:
+        dict_list = []
+        for i in dictionary:
+            dict_list.append(i)
+    else:
+        dict_list = dictionary
 
     # Transformation
     compressed_text = list()          # Regular array
@@ -22,12 +25,16 @@ def encode(plain_text: str, dictionary: str) -> List[int]:
 
     return compressed_text            # Return the encoded text
 
-def decode(compressed_text: List[int], dictionary: str) -> str:
+def decode(compressed_text: List[int], dictionary) -> str:
     
-    # Trasformo il dizionario da stringa a lista di caratteri
     dict_list = []
-    for i in dictionary:
-        dict_list.append(i)
+    # Trasformo il dizionario da stringa a lista di caratteri
+    if type(dictionary) is str:
+        dict_list = []
+        for i in dictionary:
+            dict_list.append(i)
+    else:
+        dict_list = dictionary
 
     plain_text = ""
 

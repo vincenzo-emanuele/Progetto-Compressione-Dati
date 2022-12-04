@@ -1,5 +1,5 @@
 import Bwt.bwt as bwt
-import Mtf.mtf as mtf
+import Mtf.bmtf as bmtf
 import Rle.rle as rle
 import time
 import pickle
@@ -40,11 +40,16 @@ if __name__ == "__main__":
     #print(rleDecodedString)
 
     # IMTF
+    
+    key = "Chiave segreta"
+    block_size = 1024
+
     mtfList = rleDecodedString.split(",")
     res = []
     for i in mtfList:
         res.append(int(i))
-    mtfDecodedString = mtf.decode(res, dictionary=sorted(dictionaryStr))
+    #mtfDecodedString = mtf.decode(res, dictionary=sorted(dictionaryStr))
+    mtfDecodedString = bmtf.secure_decode(res, sorted(dictionaryStr), key, block_size)
     #print("-----MTF: " + mtfDecodedString)
 
     # IBWT
@@ -53,7 +58,7 @@ if __name__ == "__main__":
     block_lenght = 1024*300 +1 # Deve essere la stessa usata in compressione +1 per l'EOF
     using_blocks = True
     bwtDecodedString = []   
-    key = "Chiave segreta"
+    
 
     if using_blocks and len(mtfDecodedString) > block_lenght:
         print("Block mode")

@@ -1,5 +1,5 @@
 import Bwt.bwt as bwt
-import Mtf.mtf as mtf
+import Mtf.bmtf as bmtf
 import Rle.rle as rle
 from dahuffman import HuffmanCodec 
 import time
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     dictionary.add("\003")
     dictionary = sorted(dictionary)
     #BWT
-    print("Starting BWT...")
+    print("Starting sBWT...")
     bwtStartTime = time.time()
 
     # Codice per eseguire la BWT a blocchi
@@ -68,10 +68,14 @@ if __name__ == "__main__":
     fileOutputDictBWT.write(dictStr)
 
     #MTF
-    print("Starting MTF...")
+    print("Starting bMTF...")
+    
+    block_size = 1024
+    
     mtf_start_time = time.time()
     #print(sorted(dictionary))
-    outputMTF = mtf.encode(plain_text=outputBWT, dictionary=sorted(dictionary)) 
+    #outputMTF = mtf.encode(plain_text=outputBWT, dictionary=sorted(dictionary)) 
+    outputMTF = bmtf.secure_encode(outputBWT, dictionary, key, block_size)
     mtf_elapsed_time = time.time() - mtf_start_time
     print(str(mtf_elapsed_time) + "  -> elapsed time of MTF")
     fileOutputMTF = open("TestFiles/Output/outputMTF.txt", "w+")

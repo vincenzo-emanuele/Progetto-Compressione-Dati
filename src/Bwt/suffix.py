@@ -1,4 +1,3 @@
-import random
 import Bwt.customSort as customSort
 # Python3 program for building suffix
 # array of a given text
