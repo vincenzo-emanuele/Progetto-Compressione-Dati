@@ -1,3 +1,5 @@
+import random
+import Bwt.customSort as customSort
 # Python3 program for building suffix
 # array of a given text
 
@@ -13,22 +15,26 @@ class suffix:
 # string 'txt' of size n as an argument,
 # builds and return the suffix array for
 # the given string
-def buildSuffixArray(txt, n):
-	
+def buildSuffixArray(txt, n, key):
+
 	# A structure to store suffixes
 	# and their indexes
 	suffixes = [suffix() for _ in range(n)]
 
+	# Estraggo l'alfabeto e randomizzo il mapping dei caratteri
+	alfabeto = sorted(set(txt))
+	remap_dict = customSort.getSecretSort(alfabeto, key)
+	#print(dict(sorted(remap_dict.items(), key=lambda item: item[1])))
 	# Store suffixes and their indexes in
 	# an array of structures. The structure
 	# is needed to sort the suffixes alphabetically
 	# and maintain their old indexes while sorting
 	for i in range(n):
-		suffixes[i].index = i
-		suffixes[i].rank[0] = (ord(txt[i]) -
-							ord("a"))
-		suffixes[i].rank[1] = (ord(txt[i + 1]) -
-						ord("a")) if ((i + 1) < n) else -1
+		#print("LUNGHEZZA:", n)
+		#print("TXT[i]:", txt[i] ,remap_dict[txt[i]], "TXT[i+1]:", txt[i+1] ,remap_dict[txt[i+1]])
+		suffixes[i].index = i 
+		suffixes[i].rank[0] = remap_dict[txt[i]]
+		suffixes[i].rank[1] = remap_dict[txt[i+1]] if ((i + 1) < n) else -1
 
 	# Sort the suffixes according to the rank
 	# and next rank
@@ -110,9 +116,10 @@ def printArr(arr, n):
 if __name__ == "__main__":
 	
 	txt = "banana"
+	txt += "\003"
 	n = len(txt)
 	
-	suffixArr = buildSuffixArray(txt, n)
+	suffixArr = buildSuffixArray(txt, n, "Chiave Segreta")
 	
 	print("Following is suffix array for", txt)
 	

@@ -6,8 +6,8 @@ import time
 import pickle
 import multiprocessing
 
-def block_bwt(input, index, return_dict):
-    outputBWT = bwt.bwt_from_suffix(input)
+def block_bwt(input, key, index, return_dict):
+    outputBWT = bwt.bwt_from_suffix(input, key)
     return_dict[index] = outputBWT
 
 if __name__ == "__main__":
@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     dictionary = set(stringInput)
     dictionary.add("\003")
-
+    dictionary = sorted(dictionary)
     #BWT
     print("Starting BWT...")
     bwtStartTime = time.time()
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     block_lenght = 1024*300
     using_blocks = True
     outputBWT = ""
-
+    key = "Chiave segreta"
     if using_blocks and len(stringInput) > block_lenght:
         print("Block mode")
         # Creo il dizionario condiviso
@@ -40,7 +40,7 @@ if __name__ == "__main__":
         process_list = []
         for i in range(0, len(stringInput),block_lenght):
             input_block = stringInput[i:i+block_lenght] + "\003" # Add EOF
-            p = multiprocessing.Process(target=block_bwt, args=(input_block, j, return_dict))
+            p = multiprocessing.Process(target=block_bwt, args=(input_block, key, j, return_dict))
             j+=1
             process_list.append(p)
             p.start()
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     else:
         print("Full file mode")
         stringInput += "\003" # Add EOF
-        outputBWT = bwt.bwt_from_suffix(stringInput)
+        outputBWT = bwt.bwt_from_suffix(stringInput, key)
 
     bwtElapsedTime = time.time() - bwtStartTime
     print(str(bwtElapsedTime) + "  -> elapsed time of BWT")

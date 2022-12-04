@@ -6,8 +6,8 @@ import pickle
 from dahuffman import HuffmanCodec
 import multiprocessing
 
-def block_bwt(input, index, return_dict):
-    output = bwt.ibwt_from_suffix(input)
+def block_bwt(input, key, index, return_dict):
+    output = bwt.ibwt_from_suffix(input, key)
     return_dict[index] = output
 
 
@@ -53,6 +53,7 @@ if __name__ == "__main__":
     block_lenght = 1024*300 +1 # Deve essere la stessa usata in compressione +1 per l'EOF
     using_blocks = True
     bwtDecodedString = []   
+    key = "Chiave segreta"
 
     if using_blocks and len(mtfDecodedString) > block_lenght:
         print("Block mode")
@@ -65,7 +66,7 @@ if __name__ == "__main__":
         processList = []
         for i in range(0, len(mtfDecodedString),block_lenght):
             input_block = mtfDecodedString[i:i+block_lenght]
-            p = multiprocessing.Process(target=block_bwt, args=(input_block, j, return_dict))
+            p = multiprocessing.Process(target=block_bwt, args=(input_block, key, j, return_dict))
             j+=1
             processList.append(p)
             p.start()
@@ -77,7 +78,7 @@ if __name__ == "__main__":
             bwtDecodedString.extend(return_dict[i])
     else:
         print("Full file mode")
-        bwtDecodedString = bwt.ibwt_from_suffix(mtfDecodedString)
+        bwtDecodedString = bwt.ibwt_from_suffix(mtfDecodedString, key)
 
     #print(bwtDecodedString)
     outputBWTFile = open("TestFiles/Output/decompresso.txt", "w+")

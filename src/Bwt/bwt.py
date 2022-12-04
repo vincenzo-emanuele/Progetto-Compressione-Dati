@@ -1,4 +1,5 @@
 import Bwt.suffix as suffix
+import Bwt.customSort as customSort
 #from pydivsufsort import divsufsort
 
 # versione non efficiente del calcolo dell'array dei suffissi (non viene più usata)
@@ -6,14 +7,14 @@ def suffix_array(string):
     return(list(sorted(range(len(string)), key=lambda i:string[i:])))
 
 # versione della BWT che utilizza gli array dei suffissi
-def bwt_from_suffix(string, s_array=None):
+def bwt_from_suffix(string, key, s_array=None):
     if s_array is None:
         #s_array = divsufsort(string)
-         s_array = suffix.buildSuffixArray(string, len(string))
+         s_array = suffix.buildSuffixArray(string, len(string), key)
     return("".join(string[idx - 1] for idx in s_array)) 
 
 # inversa della BWT che utilizza gli array dei suffissi
-def ibwt_from_suffix(string):
+def ibwt_from_suffix(string, key):
     """
     for i := 0 to N-1 do
         P[i] := C[L[i]];
@@ -35,16 +36,22 @@ def ibwt_from_suffix(string):
     return S
     """
     alphabeth = sorted(set(string))
+    remap_dict = customSort.getSecretSort(alphabeth, key)
+    secret_alphabeth = []
+    temp_dict = dict(sorted(remap_dict.items(), key=lambda item: item[1])).keys()
+    for key in temp_dict:
+        secret_alphabeth.append(key)
+    #print("ALFABETO IBWT: " + str(secret_alphabeth))
     C = {}
-    for i in range(0, len(alphabeth)):
-        C[alphabeth[i]] = 0
+    for i in range(0, len(secret_alphabeth)):
+        C[secret_alphabeth[i]] = 0
     P = list()
     for i in range(0, len(string)):
         P.append(C[string[i]])
         C[string[i]] = C[string[i]] + 1
 
     sum = 0
-    for character in alphabeth:
+    for character in secret_alphabeth:
         sum = sum + C[character]
         C[character] = sum - C[character]
 
