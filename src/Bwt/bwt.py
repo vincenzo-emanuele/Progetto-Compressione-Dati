@@ -96,7 +96,7 @@ def count_occurences(string, letters=None):
     result = {}
     
     if letters is None:
-        letters = set(s)
+        letters = set(string)
         
     c = Counter(string)
     
