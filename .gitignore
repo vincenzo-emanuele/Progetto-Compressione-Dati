@@ -8,3 +8,15 @@ src/TestFiles/Output/outputMTF.txt
 src/TestFiles/Output/outputPC.txt
 src/TestFiles/Output/outputPCCodec.txt
 src/TestFiles/Output/outputRLE.txt
+*.aux
+*.acn
+*.fdb_latexmk
+*.fls
+*.glo
+*.ist
+*.lof
+*.log
+*.out
+tesina/tesina.pdf
+tesina/tesina.synctex.gz
+*.toc
