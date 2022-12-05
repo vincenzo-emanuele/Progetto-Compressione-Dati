@@ -1,9 +1,9 @@
 import Bwt.bwt as bwt
 import Mtf.bmtf as bmtf
 import Rle.rle as rle
-import time
+import PC.pc as pc
 import pickle
-from dahuffman import HuffmanCodec
+import time
 import multiprocessing
 
 def block_bwt(input, key, index, return_dict):
@@ -12,7 +12,6 @@ def block_bwt(input, key, index, return_dict):
 
 
 if __name__ == "__main__":
-
     start = time.time()
     # leggo il dizionario salvato dalla bwt in fase di compressione
     dictionaryFile = open("TestFiles/Output/outputDictBWT.txt")
@@ -21,13 +20,16 @@ if __name__ == "__main__":
     for string in dictionaryLines:
         dictionaryStr += string
 
-
     # IPC
+    pcStartTime = time.time()
+
     encodedFile = open("TestFiles/Output/outputPC.txt", "rb")
-    codecFile = open("TestFiles/Output/outputPCCodec.txt", "rb")
     encoded = pickle.load(encodedFile)
-    codec = pickle.load(codecFile)
-    outputPC = codec.decode(encoded)
+    
+    outputPC = pc.decompress(encoded, 0)
+
+    pcElapsedTime = time.time() - pcStartTime
+    print(str(pcElapsedTime) + "  -> elapsed time of IPC")
 
     # IRLE
     '''rleFile = open("TestFiles/Output/outputRLE.txt", "r")
@@ -35,12 +37,19 @@ if __name__ == "__main__":
     rleString = ""
     for val in rleLines:
         rleString += val'''
+    rleStartTime = time.time()
+    
     rleModule = rle.Rle()
     rleDecodedString = rle.Rle.rle_decode(rleModule, data=outputPC)
     #print(rleDecodedString)
 
+    rleElapsedTime = time.time() - rleStartTime
+    print(str(rleElapsedTime) + "  -> elapsed time of IRLE")
+
     # IMTF
     
+    mtfStartTime = time.time()
+
     key = "Chiave segreta"
     block_size = 1024
 
@@ -52,7 +61,12 @@ if __name__ == "__main__":
     mtfDecodedString = bmtf.secure_decode(res, sorted(dictionaryStr), key, block_size)
     #print("-----MTF: " + mtfDecodedString)
 
+    mtfElapsedTime = time.time() - mtfStartTime
+    print(str(mtfElapsedTime) + "  -> elapsed time of IMTF")
+
     # IBWT
+
+    bwtStartTime = time.time()
 
     # Dividi in blocchi mtfDecodedString
     block_lenght = 1024*300 +1 # Deve essere la stessa usata in compressione +1 per l'EOF
@@ -92,4 +106,7 @@ if __name__ == "__main__":
         outputBWTString += bwtDecodedString[i]
     outputBWTFile.write(str(outputBWTString))
 
-    print("elapsed time: " + str(time.time() - start))
+    bwtElapsedTime = time.time() - bwtStartTime
+    print(str(bwtElapsedTime) + "  -> elapsed time of IBWT")
+
+    print("Total elapsed time: " + str(time.time() - start))

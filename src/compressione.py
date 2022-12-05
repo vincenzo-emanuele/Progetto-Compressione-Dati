@@ -1,7 +1,7 @@
 import Bwt.bwt as bwt
 import Mtf.bmtf as bmtf
 import Rle.rle as rle
-from dahuffman import HuffmanCodec 
+import PC.pc as pc
 import time
 import pickle
 import multiprocessing
@@ -11,7 +11,7 @@ def block_bwt(input, key, index, return_dict):
     return_dict[index] = outputBWT
 
 if __name__ == "__main__":
-    inputFile = open("TestFiles/Input/PROVA.txt", "r")
+    inputFile = open("TestFiles/Input/alice29.txt", "r")
     listInput = inputFile.readlines()
     stringInput = ""
     for val in listInput:
@@ -92,9 +92,8 @@ if __name__ == "__main__":
     fileOutputRLE.write(str(outputRLE))
 
     #PC
-    codec = HuffmanCodec.from_data(outputRLE)
-    encoded = codec.encode(outputRLE)
-    fileOutputPC = open("TestFiles/Output/outputPC.txt", "wb")
-    fileOutputPCCodec = open("TestFiles/Output/outputPCCodec.txt", "wb")
-    pickle.dump(encoded, fileOutputPC)
-    pickle.dump(codec, fileOutputPCCodec)
+    print("Starting PC")
+    pc_start_time = time.time()
+    pc.compress(outputRLE, 0)
+    pc_elapsed_time = time.time() - pc_start_time
+    print(str(pc_elapsed_time) + "  -> elapsed time of PC")
