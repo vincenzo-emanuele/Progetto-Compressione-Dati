@@ -20,3 +20,7 @@ src/TestFiles/Output/outputRLE.txt
 tesina/tesina.pdf
 tesina/tesina.synctex.gz
 *.toc
+src/TestFiles/Output/outputDictLZW.txt
+src/PC/in.txt
+src/PC/out.txt
+src/PC/outDict.txt

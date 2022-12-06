@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
     pcElapsedTime = time.time() - pcStartTime
     print(str(pcElapsedTime) + "  -> elapsed time of IPC")
-    print("OUTPUT", outputPC[:500])
+    #print("OUTPUT", outputPC[:500])
 
     # IRLE
     '''rleFile = open("TestFiles/Output/outputRLE.txt", "r")
