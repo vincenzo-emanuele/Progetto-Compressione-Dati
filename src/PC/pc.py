@@ -1,13 +1,14 @@
 from dahuffman import HuffmanCodec
 import pickle
 #import json
-from lzw3 import compressor, decompressor
+import PC.lzw as lzw
 
 def compress(input, flag: int):
     '''
     To select Desired Algorithm:\n
     0 = Huffman\n
-    1 = Arithmetic Coding
+    1 = Arithmetic Coding (Non implementato)\n
+    2 = LZW
     '''
     encoded = ""
 
@@ -44,7 +45,10 @@ def compress(input, flag: int):
             fileAE.close()
             return encoded'''
     elif flag == 2:
-        print("Not implemented")
+        print("LZW")
+        encoded, dictionary = lzw.compress(input)
+        fileOutputDict = open("TestFiles/Output/outputDictLZW.txt", "wb")
+        pickle.dump(dictionary, fileOutputDict)
         
         # LZW
 
@@ -56,7 +60,8 @@ def decompress(input, flag):
     '''
     To select Desired Algorithm:\n
     0 = Huffman\n
-    1 = Arithmetic Coding
+    1 = Arithmetic Coding\n
+    2 = LZW
     '''
 
     output = ""
@@ -66,21 +71,26 @@ def decompress(input, flag):
         codecFile = open("TestFiles/Output/outputPCCodec.txt", "rb")
         codec = pickle.load(codecFile)
         output = codec.decode(input)
-    '''elif flag == 1:
-        print("Using Arithmetic Coding")
-        if __name__ == "__main__":
-            fileAE = open("../TestFiles/Output/freqAE.txt", "r")
-        else:
-            fileAE = open("TestFiles/Output/freqAE.txt", "r")
+        '''elif flag == 1:
+            print("Using Arithmetic Coding")
+            if __name__ == "__main__":
+                fileAE = open("../TestFiles/Output/freqAE.txt", "r")
+            else:
+                fileAE = open("TestFiles/Output/freqAE.txt", "r")
 
-        length = int(fileAE.readline())
-        getcontext().prec = length
-        # Get the frequency table
-        data = fileAE.readline()
-        freq_chars = json.loads(data)
-        #print("LUNGHEZZA:", length, "FREQ:", freq_chars)
-        codec = pyae.ArithmeticEncoding(frequency_table=freq_chars)
-        output_ae, decoder = codec.decode(input, length, codec.probability_table)'''
+            length = int(fileAE.readline())
+            getcontext().prec = length
+            # Get the frequency table
+            data = fileAE.readline()
+            freq_chars = json.loads(data)
+            #print("LUNGHEZZA:", length, "FREQ:", freq_chars)
+            codec = pyae.ArithmeticEncoding(frequency_table=freq_chars)
+            output_ae, decoder = codec.decode(input, length, codec.probability_table)'''
+    elif flag == 2:
+        print("Using LZW")
+        fileDict = open("TestFiles/Output/outputDictLZW.txt", "rb")
+        dictionary = pickle.load(fileDict)
+        output = lzw.decompress(input, dictionary).decode()
 
     return output 
 

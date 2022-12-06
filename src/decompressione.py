@@ -26,10 +26,11 @@ if __name__ == "__main__":
     encodedFile = open("TestFiles/Output/outputPC.txt", "rb")
     encoded = pickle.load(encodedFile)
     
-    outputPC = pc.decompress(encoded, 0)
+    outputPC = pc.decompress(encoded, 2)
 
     pcElapsedTime = time.time() - pcStartTime
     print(str(pcElapsedTime) + "  -> elapsed time of IPC")
+    print("OUTPUT", outputPC[:500])
 
     # IRLE
     '''rleFile = open("TestFiles/Output/outputRLE.txt", "r")
