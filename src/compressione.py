@@ -5,6 +5,7 @@ import PC.pc as pc
 import time
 import pickle
 import multiprocessing
+import random
 
 def block_bwt(input, key, index, return_dict):
     outputBWT = bwt.bwt_from_suffix(input, key)
@@ -30,6 +31,9 @@ if __name__ == "__main__":
     using_blocks = True
     outputBWT = ""
     key = "Chiave segreta"
+    r = str(random.randint(0, 9999999))
+    rFile = open("TestFiles/Output/rfile.txt", "w")
+    rFile.write(r)
     if using_blocks and len(stringInput) > block_lenght:
         print("Block mode")
         # Creo il dizionario condiviso
@@ -40,7 +44,7 @@ if __name__ == "__main__":
         process_list = []
         for i in range(0, len(stringInput),block_lenght):
             input_block = stringInput[i:i+block_lenght] + "\003" # Add EOF
-            p = multiprocessing.Process(target=block_bwt, args=(input_block, key, j, return_dict))
+            p = multiprocessing.Process(target=block_bwt, args=(input_block, r + key, j, return_dict))
             j+=1
             process_list.append(p)
             p.start()

@@ -73,7 +73,8 @@ if __name__ == "__main__":
     block_lenght = 1024*300 +1 # Deve essere la stessa usata in compressione +1 per l'EOF
     using_blocks = True
     bwtDecodedString = []   
-    
+    rFile = open("TestFiles/Output/rfile.txt", "r")
+    r = rFile.readline()
 
     if using_blocks and len(mtfDecodedString) > block_lenght:
         print("Block mode")
@@ -86,7 +87,7 @@ if __name__ == "__main__":
         processList = []
         for i in range(0, len(mtfDecodedString),block_lenght):
             input_block = mtfDecodedString[i:i+block_lenght]
-            p = multiprocessing.Process(target=block_bwt, args=(input_block, key, j, return_dict))
+            p = multiprocessing.Process(target=block_bwt, args=(input_block, r + key, j, return_dict))
             j+=1
             processList.append(p)
             p.start()
