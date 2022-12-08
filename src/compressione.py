@@ -98,6 +98,6 @@ if __name__ == "__main__":
     #PC
     print("Starting PC")
     pc_start_time = time.time()
-    pc.compress(outputRLE, 2)
+    pc.compress(outputRLE, 0)
     pc_elapsed_time = time.time() - pc_start_time
     print(str(pc_elapsed_time) + "  -> elapsed time of PC")

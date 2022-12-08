@@ -2,18 +2,18 @@
 
 import os
 import argparse
-from coding.encoder import ArithmeticEncoder
-from coding.decoder import ArithmeticalDecoder
+from PC.ae_lib.encoder import ArithmeticEncoder
+from PC.ae_lib.decoder import ArithmeticalDecoder
+import pickle
 #from termcolor import cprint
 
 
-def compress(file_in):
+def compress(input):
     #cprint(f'Input file size: {os.stat(file_in).st_size}', 'magenta')
     '''with open(file_in, 'rb') as f:
         content = f.read()'''
-    content = file_in
 
-    ae = ArithmeticEncoder(content)
+    ae = ArithmeticEncoder(input)
     content_fraction, length, symbols_dict = ae.encode()
 
     '''fw = FileWriter(file_out)
@@ -30,14 +30,16 @@ def decompress(content_fraction, length, symbols_dict):
 
     ad = ArithmeticalDecoder(content_fraction, length, symbols_dict)
     decoded_content = ad.decode()
-
-    '''with open(file_out, 'wb') as f:
-        f.write(decoded_content)'''
-    fileOut = open("decompresso.txt", "w")
     string = ""
     for char in decoded_content:
         string += char
-    fileOut.write(string)
+
+    return string
+    '''fileOut = open("decompresso.txt", "w")
+    string = ""
+    for char in decoded_content:
+        string += char
+    fileOut.write(string)'''
     #print("Decodifica:", decoded_content)
     #cprint(f'Output file size: {os.stat(file_out).st_size}', 'blue')
 
@@ -58,12 +60,15 @@ def main():
 if __name__ == '__main__':
     #main()
     #input = "ciao ciao ciao ciao ciao ciao"
-    inputFile = open("alice29.txt", "r")
+    inputFile = open("ae_lib/alice29.txt", "r")
     listInput = inputFile.readlines()
     stringInput = ""
     for val in listInput:
         stringInput += val
     print("Compressione")
     content_fraction, length, symbols_dict = compress(stringInput)
+    fileOut = open("outputAE.txt", "wb")
+    pickle.dump(content_fraction, fileOut)
+    
     print("Decompressione")
     decompress(content_fraction, length, symbols_dict)
