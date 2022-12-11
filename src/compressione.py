@@ -6,13 +6,15 @@ import time
 import pickle
 import multiprocessing
 import random
+import subprocess
 
 def block_bwt(input, key, index, return_dict):
     outputBWT = bwt.bwt_from_suffix(input, key)
     return_dict[index] = outputBWT
 
-if __name__ == "__main__":
-    inputFile = open("TestFiles/Input/PROVA.txt", "r")
+def compressione(file_name: str, secret_key: str):
+    filePath = "TestFiles/Input/" + file_name
+    inputFile = open(filePath, "r")
     listInput = inputFile.readlines()
     stringInput = ""
     for val in listInput:
@@ -21,6 +23,7 @@ if __name__ == "__main__":
     dictionary = set(stringInput)
     dictionary.add("\003")
     dictionary = sorted(dictionary)
+    start_time = time.time()
     #BWT
     print("Starting sBWT...")
     bwtStartTime = time.time()
@@ -30,7 +33,6 @@ if __name__ == "__main__":
     block_lenght = 1024*300
     using_blocks = True
     outputBWT = ""
-    key = "Chiave segreta"
     r = str(random.randint(0, 9999999))
     rFile = open("TestFiles/Output/rfile.txt", "w")
     rFile.write(r)
@@ -44,7 +46,7 @@ if __name__ == "__main__":
         process_list = []
         for i in range(0, len(stringInput),block_lenght):
             input_block = stringInput[i:i+block_lenght] + "\003" # Add EOF
-            p = multiprocessing.Process(target=block_bwt, args=(input_block, r + key, j, return_dict))
+            p = multiprocessing.Process(target=block_bwt, args=(input_block, r + secret_key, j, return_dict))
             j+=1
             process_list.append(p)
             p.start()
@@ -58,7 +60,7 @@ if __name__ == "__main__":
     else:
         print("Full file mode")
         stringInput += "\003" # Add EOF
-        outputBWT = bwt.bwt_from_suffix(stringInput, key)
+        outputBWT = bwt.bwt_from_suffix(stringInput, secret_key)
 
     bwtElapsedTime = time.time() - bwtStartTime
     print(str(bwtElapsedTime) + "  -> elapsed time of BWT")
@@ -79,7 +81,7 @@ if __name__ == "__main__":
     mtf_start_time = time.time()
     #print(sorted(dictionary))
     #outputMTF = mtf.encode(plain_text=outputBWT, dictionary=sorted(dictionary)) 
-    outputMTF = bmtf.secure_encode(outputBWT, dictionary, key, block_size)
+    outputMTF = bmtf.secure_encode(outputBWT, dictionary, secret_key, block_size)
     mtf_elapsed_time = time.time() - mtf_start_time
     print(str(mtf_elapsed_time) + "  -> elapsed time of MTF")
     fileOutputMTF = open("TestFiles/Output/outputMTF.txt", "w+")
@@ -98,6 +100,9 @@ if __name__ == "__main__":
     #PC
     print("Starting PC")
     pc_start_time = time.time()
-    pc.compress(outputRLE, 0)
+    pc.compress(outputRLE, 2)
     pc_elapsed_time = time.time() - pc_start_time
     print(str(pc_elapsed_time) + "  -> elapsed time of PC")
+    total_elapsed_time = time.time() - start_time
+    print(str(total_elapsed_time) + "  -> elapsed time of compression")
+

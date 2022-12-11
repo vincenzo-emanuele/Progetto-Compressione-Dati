@@ -5,13 +5,15 @@ import PC.pc as pc
 import pickle
 import time
 import multiprocessing
+import subprocess
+import shlex
 
 def block_bwt(input, key, index, return_dict):
     output = bwt.ibwt_from_suffix(input, key)
     return_dict[index] = output
 
 
-if __name__ == "__main__":
+def decompressione(secret_key: str):
     start = time.time()
     # leggo il dizionario salvato dalla bwt in fase di compressione
     dictionaryFile = open("TestFiles/Output/outputDictBWT.txt")
@@ -26,7 +28,7 @@ if __name__ == "__main__":
     encodedFile = open("TestFiles/Output/outputPC.txt", "rb")
     encoded = pickle.load(encodedFile)
     
-    outputPC = pc.decompress(encoded, 0)
+    outputPC = pc.decompress(encoded, 2)
 
     pcElapsedTime = time.time() - pcStartTime
     print(str(pcElapsedTime) + "  -> elapsed time of IPC")
@@ -51,7 +53,6 @@ if __name__ == "__main__":
     
     mtfStartTime = time.time()
 
-    key = "Chiave segreta"
     block_size = 1024
 
     mtfList = rleDecodedString.split(",")
@@ -59,7 +60,7 @@ if __name__ == "__main__":
     for i in mtfList:
         res.append(int(i))
     #mtfDecodedString = mtf.decode(res, dictionary=sorted(dictionaryStr))
-    mtfDecodedString = bmtf.secure_decode(res, sorted(dictionaryStr), key, block_size)
+    mtfDecodedString = bmtf.secure_decode(res, sorted(dictionaryStr), secret_key, block_size)
     #print("-----MTF: " + mtfDecodedString)
 
     mtfElapsedTime = time.time() - mtfStartTime
@@ -87,7 +88,7 @@ if __name__ == "__main__":
         processList = []
         for i in range(0, len(mtfDecodedString),block_lenght):
             input_block = mtfDecodedString[i:i+block_lenght]
-            p = multiprocessing.Process(target=block_bwt, args=(input_block, r + key, j, return_dict))
+            p = multiprocessing.Process(target=block_bwt, args=(input_block, r + secret_key, j, return_dict))
             j+=1
             processList.append(p)
             p.start()
@@ -99,7 +100,7 @@ if __name__ == "__main__":
             bwtDecodedString.extend(return_dict[i])
     else:
         print("Full file mode")
-        bwtDecodedString = bwt.ibwt_from_suffix(mtfDecodedString, key)
+        bwtDecodedString = bwt.ibwt_from_suffix(mtfDecodedString, secret_key)
 
     #print(bwtDecodedString)
     outputBWTFile = open("TestFiles/Output/decompresso.txt", "w+")
