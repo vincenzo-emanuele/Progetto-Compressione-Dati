@@ -26,3 +26,5 @@ src/PC/out.txt
 src/PC/outDict.txt
 src/PC/outputAE.txt
 src/TestFiles/Output/fileAE.txt
+src/TestFiles/Output/decompressed.txt
+src/TestFiles/Output/rfile.txt
