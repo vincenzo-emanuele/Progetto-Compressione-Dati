@@ -5,6 +5,7 @@ import pc.pc as pc
 import pickle
 import time
 import multiprocessing
+import math
 
 def block_bwt(input, key, index, return_dict):
     output = sbwt.ibwt_from_suffix(input, key)
@@ -51,7 +52,7 @@ def decompressione(secret_key: str):
     
     mtfStartTime = time.time()
 
-    block_size = 1024
+    block_size = 1024 #1/2((math.log2(len(stringInput))/math.log2(len(dictionary)))) The real formula is this one
 
     mtfList = rleDecodedString.split(",")
     res = []
