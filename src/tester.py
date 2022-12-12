@@ -10,10 +10,10 @@ if __name__ == "__main__":
     file_name = sys.argv[1]
     secret_key = sys.argv[2]
     print("starting compression...")
-    compression.compressione(sys.argv[1], sys.argv[2])
+    compression.compressione(file_name, secret_key)
     print("\n\nstarting decompression...")
-    decompression.decompressione(sys.argv[2])
-    original_file_path = "TestFiles/Input/" + sys.argv[1]
+    decompression.decompressione(secret_key)
+    original_file_path = "TestFiles/Input/" + file_name
     decompressed_file_path = "TestFiles/Output/decompressed.txt"
     equals = filecmp.cmp(original_file_path, decompressed_file_path, False)
     if equals:
