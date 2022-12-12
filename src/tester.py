@@ -5,10 +5,12 @@ import filecmp
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("specify 2 parameters")
-        exit()
-    file_name = sys.argv[1]
-    secret_key = sys.argv[2]
+        print("Missing arguments, proceeding with default ones\nname=alice29.txt e key=Chiave Segreta")
+        file_name = "alice29.txt"
+        secret_key = "Chiave segreta"
+    else:
+        file_name = sys.argv[1]
+        secret_key = sys.argv[2]
     print("starting compression...")
     compression.compressione(file_name, secret_key)
     print("\n\nstarting decompression...")
