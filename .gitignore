@@ -17,7 +17,6 @@ src/TestFiles/Output/outputRLE.txt
 *.lof
 *.log
 *.out
-tesina/tesina.pdf
 tesina/tesina.synctex.gz
 *.toc
 src/TestFiles/Output/outputDictLZW.txt
