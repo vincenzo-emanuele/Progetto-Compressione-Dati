@@ -1,8 +1,8 @@
 from dahuffman import HuffmanCodec
 import pickle
 #import json
-import PC.lzw as lzw
-import PC.arithmetic_coding as arithmetic_coding
+import pc.lzw as lzw
+import pc.arithmetic_coding as arithmetic_coding
 
 def compress(input, flag: int):
     '''
@@ -14,21 +14,21 @@ def compress(input, flag: int):
     encoded = ""
 
     if flag == 0:
-        print("Using Huffman")
+        print("using Huffman")
         codec = HuffmanCodec.from_data(input)
         encoded = codec.encode(input)
         fileOutputPCCodec = open("TestFiles/Output/outputPCCodec.txt", "wb")
         pickle.dump(codec, fileOutputPCCodec)
         
     elif flag == 1:
-        print("Using Arithmetic Coding")
+        print("using Arithmetic Coding")
         encoded, length, symbols_dict = arithmetic_coding.compress(input)
         support_data = (length, symbols_dict)
         fileAE = open("TestFiles/Output/fileAE.txt", "wb")
         pickle.dump(support_data, fileAE)
         
     elif flag == 2:
-        print("LZW")
+        print("using LZW")
         encoded, dictionary = lzw.compress(input)
         fileOutputDict = open("TestFiles/Output/outputDictLZW.txt", "wb")
         pickle.dump(dictionary, fileOutputDict)
@@ -50,13 +50,13 @@ def decompress(input, flag):
     output = ""
     
     if flag == 0:
-        print("Using Huffman")
+        print("using Huffman")
         codecFile = open("TestFiles/Output/outputPCCodec.txt", "rb")
         codec = pickle.load(codecFile)
         output = codec.decode(input)
     
     elif flag == 1:
-        print("Using Arithmetic Coding")
+        print("using Arithmetic Coding")
         fileAE = open("TestFiles/Output/fileAE.txt", "rb")
         support_data = pickle.load(fileAE)
         length = support_data[0]
@@ -64,7 +64,7 @@ def decompress(input, flag):
         output = arithmetic_coding.decompress(input, length, symbols_dict)
 
     elif flag == 2:
-        print("Using LZW")
+        print("using LZW")
         fileDict = open("TestFiles/Output/outputDictLZW.txt", "rb")
         dictionary = pickle.load(fileDict)
         output = lzw.decompress(input, dictionary).decode()
@@ -72,7 +72,7 @@ def decompress(input, flag):
     return output 
 
 if __name__ == "__main__":
-    input = "ciao orazio questa\nè una richiesta di §e$$o"
+    input = "money"
     encoded = compress(input, 1)
     print("CODIFICA:", encoded)
     decoded = decompress(encoded, 1)

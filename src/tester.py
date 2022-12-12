@@ -1,7 +1,5 @@
-import compressione
-import decompressione
-import platform
-import os
+import compression
+import decompression
 import sys
 import filecmp
 
@@ -11,14 +9,14 @@ if __name__ == "__main__":
         exit()
     file_name = sys.argv[1]
     secret_key = sys.argv[2]
-    print("inizio compressione...")
-    compressione.compressione(sys.argv[1], sys.argv[2])
-    print("\n\ninizio decompressione...")
-    decompressione.decompressione(sys.argv[2])
+    print("starting compression...")
+    compression.compressione(sys.argv[1], sys.argv[2])
+    print("\n\nstarting decompression...")
+    decompression.decompressione(sys.argv[2])
     original_file_path = "TestFiles/Input/" + sys.argv[1]
-    decompressed_file_path = "TestFiles/Output/decompresso.txt"
+    decompressed_file_path = "TestFiles/Output/decompressed.txt"
     equals = filecmp.cmp(original_file_path, decompressed_file_path, False)
     if equals:
-        print("La decompressione è andata a buon fine")
+        print("decompression was successful")
     else:
-        print("Decompressione fallita")
+        print("decompression failed")

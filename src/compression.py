@@ -1,15 +1,14 @@
-import Bwt.bwt as bwt
-import Mtf.bmtf as bmtf
-import Rle.rle as rle
-import PC.pc as pc
+import sbwt.sbwt as sbwt
+import bmtf.bmtf as bmtf
+import rle.rle as rle
+import pc.pc as pc
 import time
-import pickle
 import multiprocessing
 import random
 import subprocess
 
 def block_bwt(input, key, index, return_dict):
-    outputBWT = bwt.bwt_from_suffix(input, key)
+    outputBWT = sbwt.bwt_from_suffix(input, key)
     return_dict[index] = outputBWT
 
 def compressione(file_name: str, secret_key: str):
@@ -25,7 +24,7 @@ def compressione(file_name: str, secret_key: str):
     dictionary = sorted(dictionary)
     start_time = time.time()
     #BWT
-    print("Starting sBWT...")
+    print("starting sBWT...")
     bwtStartTime = time.time()
 
     # Codice per eseguire la BWT a blocchi
@@ -37,7 +36,7 @@ def compressione(file_name: str, secret_key: str):
     rFile = open("TestFiles/Output/rfile.txt", "w")
     rFile.write(r)
     if using_blocks and len(stringInput) > block_lenght:
-        print("Block mode")
+        print("block mode")
         # Creo il dizionario condiviso
         manager = multiprocessing.Manager()
         return_dict = manager.dict()
@@ -58,12 +57,12 @@ def compressione(file_name: str, secret_key: str):
             outputBWT += return_dict[i]
 
     else:
-        print("Full file mode")
+        print("full file mode")
         stringInput += "\003" # Add EOF
-        outputBWT = bwt.bwt_from_suffix(stringInput, secret_key)
+        outputBWT = sbwt.bwt_from_suffix(stringInput, secret_key)
 
     bwtElapsedTime = time.time() - bwtStartTime
-    print(str(bwtElapsedTime) + "  -> elapsed time of BWT")
+    print(str(bwtElapsedTime) + "  -> elapsed time of sBWT")
     fileOutputBWT = open("TestFiles/Output/outputBWT.txt", "w+")
     fileOutputBWT.write(outputBWT)
     #salvo il dizionario della BWT
@@ -74,7 +73,7 @@ def compressione(file_name: str, secret_key: str):
     fileOutputDictBWT.write(dictStr)
 
     #MTF
-    print("Starting bMTF...")
+    print("starting bMTF...")
     
     block_size = 1024
     
@@ -83,12 +82,12 @@ def compressione(file_name: str, secret_key: str):
     #outputMTF = mtf.encode(plain_text=outputBWT, dictionary=sorted(dictionary)) 
     outputMTF = bmtf.secure_encode(outputBWT, dictionary, secret_key, block_size)
     mtf_elapsed_time = time.time() - mtf_start_time
-    print(str(mtf_elapsed_time) + "  -> elapsed time of MTF")
+    print(str(mtf_elapsed_time) + "  -> elapsed time of bMTF")
     fileOutputMTF = open("TestFiles/Output/outputMTF.txt", "w+")
     fileOutputMTF.write(str(outputMTF).replace(" ", ""))
 
     #RLE
-    print("Starting RLE")
+    print("starting RLE")
     rleModule = rle.Rle()
     rle_start_time = time.time()
     outputRLE = rle.Rle.rle_encode(rleModule, data=list(map(str, outputMTF))) # trasformo la lista di interi in lista di stringhe
@@ -98,7 +97,7 @@ def compressione(file_name: str, secret_key: str):
     fileOutputRLE.write(str(outputRLE))
 
     #PC
-    print("Starting PC")
+    print("starting PC")
     pc_start_time = time.time()
     pc.compress(outputRLE, 2)
     pc_elapsed_time = time.time() - pc_start_time

@@ -2,8 +2,8 @@
 
 import os
 import argparse
-from PC.ae_lib.encoder import ArithmeticEncoder
-from PC.ae_lib.decoder import ArithmeticalDecoder
+from pc.ae_lib.encoder import ArithmeticEncoder
+from pc.ae_lib.decoder import ArithmeticalDecoder
 import pickle
 #from termcolor import cprint
 

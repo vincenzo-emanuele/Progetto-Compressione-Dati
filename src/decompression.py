@@ -1,15 +1,13 @@
-import Bwt.bwt as bwt
-import Mtf.bmtf as bmtf
-import Rle.rle as rle
-import PC.pc as pc
+import sbwt.sbwt as sbwt
+import bmtf.bmtf as bmtf
+import rle.rle as rle
+import pc.pc as pc
 import pickle
 import time
 import multiprocessing
-import subprocess
-import shlex
 
 def block_bwt(input, key, index, return_dict):
-    output = bwt.ibwt_from_suffix(input, key)
+    output = sbwt.ibwt_from_suffix(input, key)
     return_dict[index] = output
 
 
@@ -31,7 +29,7 @@ def decompressione(secret_key: str):
     outputPC = pc.decompress(encoded, 2)
 
     pcElapsedTime = time.time() - pcStartTime
-    print(str(pcElapsedTime) + "  -> elapsed time of IPC")
+    print(str(pcElapsedTime) + "  -> elapsed time of I-PC")
     #print("OUTPUT", outputPC[:500])
 
     # IRLE
@@ -47,7 +45,7 @@ def decompressione(secret_key: str):
     #print(rleDecodedString)
 
     rleElapsedTime = time.time() - rleStartTime
-    print(str(rleElapsedTime) + "  -> elapsed time of IRLE")
+    print(str(rleElapsedTime) + "  -> elapsed time of I-RLE")
 
     # IMTF
     
@@ -64,7 +62,7 @@ def decompressione(secret_key: str):
     #print("-----MTF: " + mtfDecodedString)
 
     mtfElapsedTime = time.time() - mtfStartTime
-    print(str(mtfElapsedTime) + "  -> elapsed time of IMTF")
+    print(str(mtfElapsedTime) + "  -> elapsed time of I-BMTF")
 
     # IBWT
 
@@ -78,7 +76,7 @@ def decompressione(secret_key: str):
     r = rFile.readline()
 
     if using_blocks and len(mtfDecodedString) > block_lenght:
-        print("Block mode")
+        print("block mode")
         # Creo la variabile condivisa
         manager = multiprocessing.Manager()
         return_dict = manager.dict()
@@ -99,17 +97,17 @@ def decompressione(secret_key: str):
         for i in range(0,j):
             bwtDecodedString.extend(return_dict[i])
     else:
-        print("Full file mode")
-        bwtDecodedString = bwt.ibwt_from_suffix(mtfDecodedString, secret_key)
+        print("full file mode")
+        bwtDecodedString = sbwt.ibwt_from_suffix(mtfDecodedString, secret_key)
 
     #print(bwtDecodedString)
-    outputBWTFile = open("TestFiles/Output/decompresso.txt", "w+")
+    outputBWTFile = open("TestFiles/Output/decompressed.txt", "w+")
     outputBWTString = ""
     for i in range(0, len(bwtDecodedString)):
         outputBWTString += bwtDecodedString[i]
     outputBWTFile.write(str(outputBWTString))
 
     bwtElapsedTime = time.time() - bwtStartTime
-    print(str(bwtElapsedTime) + "  -> elapsed time of IBWT")
+    print(str(bwtElapsedTime) + "  -> elapsed time of I-BWT")
 
-    print("Total elapsed time: " + str(time.time() - start))
+    print(str(time.time() - start) + " -> elapsed time of compression")

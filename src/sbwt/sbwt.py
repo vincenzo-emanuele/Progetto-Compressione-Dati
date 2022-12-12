@@ -1,5 +1,5 @@
-import Bwt.suffix as suffix
-import Bwt.customSort as customSort
+import sbwt.suffix as suffix
+import sbwt.customSort as customSort
 #from pydivsufsort import divsufsort
 
 # versione non efficiente del calcolo dell'array dei suffissi (non viene più usata)

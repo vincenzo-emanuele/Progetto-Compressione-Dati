@@ -1,4 +1,4 @@
-from typing import List, Tuple, Union
+from typing import List
 
 def encode(plain_text: str, dictionary) -> List[int]:
     dict_list = []

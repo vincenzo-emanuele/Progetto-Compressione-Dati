@@ -1,5 +1,5 @@
-import Bwt.customSort as customSort
-import Mtf.mtf as mtf
+import sbwt.customSort as customSort
+import bmtf.mtf as mtf
 import hashlib
 from typing import List
 
