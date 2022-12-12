@@ -16,8 +16,8 @@ Per svolgere la fase di testing dell'algoritmo implementato è stato utilizzato 
     \item SSD : 512 GB;
     \item Versione di Python installata: 3.8;
 \end{itemize}
-\section{Risultati}
-La fase di testing condotta ha come scopo quello di verificare la bontà dell'algoritmo in termini computazionali (spazio e tempo) e di appurare che la decompressione vada a buon fine senza perdita di informazione, garantendo, dunque, che l'algoritmo di compressione implementato sia \emph{lossless}. Le tabelle \ref{tab:huffman} e \ref{tab:lzw} indicano, per ogni file del \emph{Dataset}, la sua dimensione non compressa, la sua dimensione a seguito della compressione, il tempo impiegato per la compressione (corrisponde al tempo di esecuzione dello script \emph{compressione.py} che implementa la \emph{pipeline} di compressione), il tempo impiegato per la decompressione (corrisponde al tempo di esecuzione dello script \emph{decompressione.py} che implementa la \emph{pipeline} di decompressione) e il rapporto di compressione ottenuto. In particolare la prima tabella si riferisce alla \emph{pipeline} di compressione che utilizza \emph{Huffman} come algoritmo di \emph{variable length Prefix Code}, mentre la seconda si riferisce alla \emph{pipeline} che fa uso di \emph{Lempel-Ziv-Welch}. Non è stato effettuato un report riguardante \emph{Arithmetic Coding} in quanto l'implementazione utilizzata risulta essere estremamente inefficiente portando a tempi di esecuzione non ragionevoli (nell'ordine di ore). \\ La \emph{pipeline} di testing è implementata dallo script \emph{testing.py} a cui vanno passati i parametri da linea di comando che indicano il nome del file di input e la chiave segreta da utilizzare.
+\section{Risultati}\label{section:risultati}
+La fase di testing condotta ha come scopo quello di verificare la bontà dell'algoritmo in termini computazionali (spazio e tempo) e di appurare che la decompressione vada a buon fine senza perdita di informazione, garantendo, dunque, che l'algoritmo di compressione implementato sia \emph{lossless}. Le tabelle \ref{tab:huffman} e \ref{tab:lzw} indicano, per ogni file del \emph{Dataset}, la sua dimensione non compressa, la sua dimensione a seguito della compressione, il tempo impiegato per la compressione (corrisponde al tempo di esecuzione dello script \emph{compression.py} che implementa la \emph{pipeline} di compressione), il tempo impiegato per la decompressione (corrisponde al tempo di esecuzione dello script \emph{decompression.py} che implementa la \emph{pipeline} di decompressione) e il rapporto di compressione ottenuto. In particolare la prima tabella si riferisce alla \emph{pipeline} di compressione che utilizza \emph{Huffman} come algoritmo di \emph{variable length Prefix Code}, mentre la seconda si riferisce alla \emph{pipeline} che fa uso di \emph{Lempel-Ziv-Welch}. Non è stato effettuato un report riguardante \emph{Arithmetic Coding} in quanto l'implementazione utilizzata risulta essere estremamente inefficiente portando a tempi di esecuzione non ragionevoli (nell'ordine di ore). \\ La \emph{pipeline} di testing è implementata dallo script \emph{testing.py} a cui vanno passati i parametri da linea di comando che indicano il nome del file di input e la chiave segreta da utilizzare.
 %Huffman
 %\begin{center}
     \begin{table}
@@ -58,4 +58,23 @@ La fase di testing condotta ha come scopo quello di verificare la bontà dell'al
     \caption{Risultati ottenuti con LZW\label{tab:lzw}}
     \end{table}
 %\end{center} 
-Dopo aver eseguito le fasi di compressione e decompressione, la \emph{pipeline} di testing si assicura che il processo sia avvenuto in maniera \emph{lossless}. Per fare ciò confronta il file di input con l'output della decompressione: se il contenuto di questi due differisce anche solo di un bit, comunicherà a video il fallimento della decompressione.
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{Progetto Compressione Dati/capitoli/images/ist1.png}
+\caption{Tempo di compressione}
+    \label{fig:ist1}
+\end{figure} 
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{Progetto Compressione Dati/capitoli/images/ist2.png}
+\caption{Tempo di decompressione}
+    \label{fig:ist2}
+\end{figure} 
+\begin{figure}[h]
+    \centering
+    \includegraphics[scale=0.5]{Progetto Compressione Dati/capitoli/images/ist3.png}
+\caption{Rapporto di compressione}
+    \label{fig:ist3}
+\end{figure} 
+Come evidenziato dagli istogrammi \ref{fig:ist1} \ref{fig:ist2} e \ref{fig:ist3}, non sono state riscontrate differenze evidenti tra l'utilizzo di \emph{Huffman} e quello di \emph{LZW}. Tendenzialmente \emph{LZW} presenta tempi di esecuzione leggermente più bassi a discapito del rapporto di compressione che nei casi di utilizzo di \emph{Huffman} risulta essere migliore. 
+Dopo aver eseguito le fasi di compressione e decompressione, la \emph{pipeline} di testing si assicura che il processo sia avvenuto in maniera \emph{lossless}. Per fare ciò confronta il file di input con l'output della decompressione: se il contenuto di questi due differisce anche solo di un bit, comunicherà a video il fallimento della decompressione. Tale verifica ha restituito esito positivo su ognuno dei file del \emph{Dataset} utilizzato.
