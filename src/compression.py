@@ -14,11 +14,10 @@ def block_bwt(input, key, index, return_dict):
 
 def compressione(file_name: str, secret_key: str):
     filePath = "TestFiles/Input/" + file_name
-    inputFile = open(filePath, "r")
-    listInput = inputFile.readlines()
-    stringInput = ""
-    for val in listInput:
-        stringInput += val
+    inputFile = open(filePath, "rb")
+    
+    listInput = inputFile.read()
+    stringInput = listInput.decode()
 
     dictionary = set(stringInput)
     dictionary.add("\003")
@@ -67,11 +66,11 @@ def compressione(file_name: str, secret_key: str):
     fileOutputBWT = open("TestFiles/Output/outputBWT.txt", "w+")
     fileOutputBWT.write(outputBWT)
     #salvo il dizionario della BWT
-    fileOutputDictBWT = open("TestFiles/Output/outputDictBWT.txt", "w+")
+    fileOutputDictBWT = open("TestFiles/Output/outputDictBWT.txt", "wb")
     dictStr = ""
     for element in set(outputBWT):
         dictStr += element
-    fileOutputDictBWT.write(dictStr)
+    fileOutputDictBWT.write(dictStr.encode())
 
     #MTF
     print("starting bMTF...")
@@ -100,7 +99,7 @@ def compressione(file_name: str, secret_key: str):
     #PC
     print("starting PC")
     pc_start_time = time.time()
-    pc.compress(outputRLE, 2)
+    pc.compress(outputRLE, 0)
     pc_elapsed_time = time.time() - pc_start_time
     print(str(pc_elapsed_time) + "  -> elapsed time of PC")
     total_elapsed_time = time.time() - start_time

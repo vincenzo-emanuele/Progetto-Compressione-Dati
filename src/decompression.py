@@ -15,11 +15,9 @@ def block_bwt(input, key, index, return_dict):
 def decompressione(secret_key: str):
     start = time.time()
     # leggo il dizionario salvato dalla bwt in fase di compressione
-    dictionaryFile = open("TestFiles/Output/outputDictBWT.txt")
-    dictionaryLines = dictionaryFile.readlines()
-    dictionaryStr = ""
-    for string in dictionaryLines:
-        dictionaryStr += string
+    dictionaryFile = open("TestFiles/Output/outputDictBWT.txt", "rb")
+    dictionaryLines = dictionaryFile.read()
+    dictionaryStr = dictionaryLines.decode()
 
     # IPC
     pcStartTime = time.time()
@@ -27,7 +25,7 @@ def decompressione(secret_key: str):
     encodedFile = open("TestFiles/Output/outputPC.txt", "rb")
     encoded = pickle.load(encodedFile)
     
-    outputPC = pc.decompress(encoded, 2)
+    outputPC = pc.decompress(encoded, 0)
 
     pcElapsedTime = time.time() - pcStartTime
     print(str(pcElapsedTime) + "  -> elapsed time of I-PC")
@@ -102,12 +100,12 @@ def decompressione(secret_key: str):
         bwtDecodedString = sbwt.ibwt_from_suffix(mtfDecodedString, secret_key)
 
     #print(bwtDecodedString)
-    outputBWTFile = open("TestFiles/Output/decompressed.txt", "w+")
+    outputBWTFile = open("TestFiles/Output/decompressed.txt", "wb")
     outputBWTString = ""
     for i in range(0, len(bwtDecodedString)):
         outputBWTString += bwtDecodedString[i]
-    outputBWTFile.write(str(outputBWTString))
-
+    #outputBWTFile.write(str(outputBWTString))
+    outputBWTFile.write(outputBWTString.encode())
     bwtElapsedTime = time.time() - bwtStartTime
     print(str(bwtElapsedTime) + "  -> elapsed time of I-BWT")
 
