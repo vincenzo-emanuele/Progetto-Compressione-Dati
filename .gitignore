@@ -27,3 +27,7 @@ src/PC/outputAE.txt
 src/TestFiles/Output/fileAE.txt
 src/TestFiles/Output/decompressed.txt
 src/TestFiles/Output/rfile.txt
+src/decompressed.txt
+src/compressed.txt
+src/TestFiles/Output/decompressed.txt
+src/TestFiles/Output/rfile.txt
