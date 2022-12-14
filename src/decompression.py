@@ -23,8 +23,10 @@ def decompressione(secret_key: str, mode: int):
     pcStartTime = time.time()
 
     encodedFile = open("TestFiles/Output/outputPC.txt", "rb")
-    #encoded = pickle.load(encodedFile)
-    encoded = encodedFile.read()
+    if mode == 1:
+        encoded = encodedFile.read()
+    else:
+        encoded = pickle.load(encodedFile)
 
     outputPC = pc.decompress(encoded, mode)
 
@@ -110,4 +112,4 @@ def decompressione(secret_key: str, mode: int):
     bwtElapsedTime = time.time() - bwtStartTime
     print(str(bwtElapsedTime) + "  -> elapsed time of I-BWT")
 
-    print(str(time.time() - start) + " -> elapsed time of compression")
+    print(str(time.time() - start) + " -> elapsed time of decompression")
