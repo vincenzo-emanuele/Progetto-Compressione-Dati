@@ -2,7 +2,11 @@ from dahuffman import HuffmanCodec
 import pickle
 #import json
 import pc.lzw as lzw
-import pc.arithmetic_coding as arithmetic_coding
+import pc.arithmetic_compress as arithmetic_compress
+import pc.arithmetic_decompress as arithmetic_decompress
+import pc.ae_lib.arithmeticcoding as arithmeticcoding
+import contextlib
+import os
 
 def compress(input, flag: int):
     '''
@@ -22,10 +26,17 @@ def compress(input, flag: int):
         
     elif flag == 1:
         print("using Arithmetic Coding")
-        encoded, length, symbols_dict = arithmetic_coding.compress(input)
-        support_data = (length, symbols_dict)
-        fileAE = open("TestFiles/Output/fileAE.txt", "wb")
-        pickle.dump(support_data, fileAE)
+        '''file_in = open("TestFiles/Output/outputRLE.txt", "rb")
+        file_out = open("TestFiles/Output/outputPC.txt", "wb")
+        ppm_compress.compress(file_in, file_out)'''
+
+        inputfile = "TestFiles/Output/outputRLE.txt"
+        outputfile = "TestFiles/Output/outputPC.txt"
+        '''with open("TestFiles/Output/outputRLE.txt", "rb") as inp, \
+                contextlib.closing(arithmeticcoding.BitOutputStream(open("TestFiles/Output/outputPC.txt", "wb"))) as bitout:
+            ppm_compress.compress(inp, bitout)'''
+        arithmetic_compress.main(inputfile, outputfile)
+        return 
         
     elif flag == 2:
         print("using LZW")
@@ -57,11 +68,14 @@ def decompress(input, flag):
     
     elif flag == 1:
         print("using Arithmetic Coding")
-        fileAE = open("TestFiles/Output/fileAE.txt", "rb")
-        support_data = pickle.load(fileAE)
-        length = support_data[0]
-        symbols_dict = support_data[1]
-        output = arithmetic_coding.decompress(input, length, symbols_dict)
+        inputfile = "TestFiles/Output/outputPC.txt"
+        tempFile = "TestFiles/Output/tempDecoded.txt"
+        arithmetic_decompress.main(inputfile, tempFile)
+        temp = open(tempFile, "rb")
+        tempOutput = temp.read()
+        temp.close()
+        os.remove(tempFile)
+        output = tempOutput.decode()
 
     elif flag == 2:
         print("using LZW")

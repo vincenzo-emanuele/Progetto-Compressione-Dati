@@ -12,7 +12,7 @@ def block_bwt(input, key, index, return_dict):
     outputBWT = sbwt.bwt_from_suffix(input, key)
     return_dict[index] = outputBWT
 
-def compressione(file_name: str, secret_key: str):
+def compressione(file_name: str, secret_key: str, mode: int):
     filePath = "TestFiles/Input/" + file_name
     inputFile = open(filePath, "rb")
     
@@ -99,7 +99,7 @@ def compressione(file_name: str, secret_key: str):
     #PC
     print("starting PC")
     pc_start_time = time.time()
-    pc.compress(outputRLE, 2)
+    pc.compress(outputRLE, mode)
     pc_elapsed_time = time.time() - pc_start_time
     print(str(pc_elapsed_time) + "  -> elapsed time of PC")
     total_elapsed_time = time.time() - start_time

@@ -12,7 +12,7 @@ def block_bwt(input, key, index, return_dict):
     return_dict[index] = output
 
 
-def decompressione(secret_key: str):
+def decompressione(secret_key: str, mode: int):
     start = time.time()
     # leggo il dizionario salvato dalla bwt in fase di compressione
     dictionaryFile = open("TestFiles/Output/outputDictBWT.txt", "rb")
@@ -23,9 +23,10 @@ def decompressione(secret_key: str):
     pcStartTime = time.time()
 
     encodedFile = open("TestFiles/Output/outputPC.txt", "rb")
-    encoded = pickle.load(encodedFile)
-    
-    outputPC = pc.decompress(encoded, 2)
+    #encoded = pickle.load(encodedFile)
+    encoded = encodedFile.read()
+
+    outputPC = pc.decompress(encoded, mode)
 
     pcElapsedTime = time.time() - pcStartTime
     print(str(pcElapsedTime) + "  -> elapsed time of I-PC")
