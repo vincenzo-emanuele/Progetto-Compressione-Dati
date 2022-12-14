@@ -25,7 +25,7 @@ def decompressione(secret_key: str):
     encodedFile = open("TestFiles/Output/outputPC.txt", "rb")
     encoded = pickle.load(encodedFile)
     
-    outputPC = pc.decompress(encoded, 0)
+    outputPC = pc.decompress(encoded, 2)
 
     pcElapsedTime = time.time() - pcStartTime
     print(str(pcElapsedTime) + "  -> elapsed time of I-PC")

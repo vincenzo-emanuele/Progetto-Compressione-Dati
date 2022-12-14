@@ -99,7 +99,7 @@ def compressione(file_name: str, secret_key: str):
     #PC
     print("starting PC")
     pc_start_time = time.time()
-    pc.compress(outputRLE, 0)
+    pc.compress(outputRLE, 2)
     pc_elapsed_time = time.time() - pc_start_time
     print(str(pc_elapsed_time) + "  -> elapsed time of PC")
     total_elapsed_time = time.time() - start_time

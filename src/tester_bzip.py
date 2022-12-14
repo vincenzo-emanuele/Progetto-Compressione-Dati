@@ -11,12 +11,13 @@ if __name__ == "__main__":
     path = "TestFiles/Input/" + file_name
     
     print("Reading file...\n")
-    file = open(path, "r")
-    contentLines = file.readlines()
+    file = open(path, "rb")
+    '''contentLines = file.readlines()
     content = ""
     for line in contentLines:
         content += line
-    byteContent = content.encode()
+    byteContent = content.encode()'''
+    byteContent = file.read()
     
     print("Finished reading, starting compression...")
     compression_start = time.time()
