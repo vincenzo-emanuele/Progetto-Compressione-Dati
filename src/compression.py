@@ -95,6 +95,7 @@ def compressione(file_name: str, secret_key: str, mode: int):
     print(str(rle_elapsed_time) + "  -> elapsed time of RLE")
     fileOutputRLE = open("TestFiles/Output/outputRLE.txt", "w+")
     fileOutputRLE.write(str(outputRLE))
+    fileOutputRLE.close()
 
     #PC
     print("starting PC")
