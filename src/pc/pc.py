@@ -5,6 +5,7 @@ import pc.lzw as lzw
 import pc.arithmetic_compress as arithmetic_compress
 import pc.arithmetic_decompress as arithmetic_decompress
 import pc.ae_lib.arithmeticcoding as arithmeticcoding
+import bz2
 import contextlib
 import os
 
@@ -13,7 +14,8 @@ def compress(input, flag: int):
     To select Desired Algorithm:\n
     0 = Huffman\n
     1 = Arithmetic Coding (Non implementato)\n
-    2 = LZW
+    2 = LZW\n
+    3 = BZip2
     '''
     encoded = ""
 
@@ -45,6 +47,9 @@ def compress(input, flag: int):
         pickle.dump(dictionary, fileOutputDict)
         
         # LZW
+    elif flag == 3:
+        print("using BZip2")
+        encoded = bz2.compress(input.encode())
 
     fileOutputPC = open("TestFiles/Output/outputPC.txt", "wb")
     pickle.dump(encoded, fileOutputPC)
@@ -55,7 +60,8 @@ def decompress(input, flag):
     To select Desired Algorithm:\n
     0 = Huffman\n
     1 = Arithmetic Coding\n
-    2 = LZW
+    2 = LZW\n
+    3 = BZip2
     '''
 
     output = ""
@@ -82,6 +88,9 @@ def decompress(input, flag):
         fileDict = open("TestFiles/Output/outputDictLZW.txt", "rb")
         dictionary = pickle.load(fileDict)
         output = lzw.decompress(input, dictionary).decode()
+    elif flag == 3:
+        print("using BZip2")
+        output = bz2.decompress(input).decode()
 
     return output 
 
