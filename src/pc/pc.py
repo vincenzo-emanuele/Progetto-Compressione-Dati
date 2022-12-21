@@ -48,7 +48,7 @@ def compress(input, flag: int):
         
         # LZW
     elif flag == 3:
-        print("using BZip2")
+        print("using bzip2")
         encoded = bz2.compress(input.encode())
 
     fileOutputPC = open("TestFiles/Output/outputPC.txt", "wb")
@@ -89,7 +89,7 @@ def decompress(input, flag):
         dictionary = pickle.load(fileDict)
         output = lzw.decompress(input, dictionary).decode()
     elif flag == 3:
-        print("using BZip2")
+        print("using bzip2")
         output = bz2.decompress(input).decode()
 
     return output 
